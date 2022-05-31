@@ -1,0 +1,11 @@
+docker build -t hydconsultores/api-card:v2 .
+docker push hydconsultores/api-card:v2 
+
+
+
+docker pull hydconsultores/api-card:v2
+docker tag hydconsultores/api-card:v2  gcr.io/natural-rider-351219/api-card:v2 
+
+
+
+
