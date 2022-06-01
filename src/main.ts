@@ -13,7 +13,6 @@ async function bootstrap() {
       preflightContinue: false,
     },
   });
-  
  //app.useGlobalInterceptors(new LoggingInterceptor());
   app.use(bodyParser.json({limit: '50mb'}));
   app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
