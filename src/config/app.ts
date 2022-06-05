@@ -16,9 +16,9 @@ export default {
     subscribers: [__dirname + '/../**/*.subscriber{.ts,.js}'],
     synchronize: true,
     logging: process.env.DEV ? true : false,
-    /*ssl: {
+    ssl: {
       rejectUnauthorized: false
-    },*/
+    }
   },
   JwtModules: {
     secretOrKey: process.env.JWT_SECRET,

@@ -1,0 +1,29 @@
+{
+    "name": "api",
+    "description": "api cards.",
+    "website": "",
+    "repository": "https://github.com/hydconsultores/api-cards",
+    "logo": "https://github.com/hydconsultores/api-cards",
+    "success_url": "/",
+    "scripts":{
+      "predeploy": "npm install && npm run build"
+    },
+    "env": {
+      "NODE_ENV": {
+        "description": "Environment [production/development]",
+        "value": "production"
+      }
+    },
+    "formation": {
+      "web": {
+        "quantity": 1
+      }
+    },
+    "image": "heroku/nodejs",
+    "addons": ["heroku-postgresql"],
+    "buildpacks": [
+      {
+        "url": "heroku/nodejs"
+      }
+    ]
+  }
