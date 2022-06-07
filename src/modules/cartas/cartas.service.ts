@@ -132,6 +132,7 @@ export class CartasService {
       //Recientes Precio Ascendente  Precio Descendiente
       let ordenamiento = '';
       let leftJoin  = '';
+      let leftJoinInit = '';
       let whereJoin = '';
       let sqlQuery = '';
       let sqlQueryCount = '';
@@ -177,7 +178,7 @@ export class CartasService {
       sqlQueryCount += `SELECT count(c.id)
       FROM cartas c `;
       
-      leftJoin += `LEFT JOIN cartas_index ci on (ci.id_carta=c.id)`;
+      leftJoinInit += `LEFT JOIN cartas_index ci on (ci.id_carta=c.id)`;
       whereJoin +=`WHERE  c.status='ACTIVE'`;
       groupBy += `group by c.id,c.nombre,c.numero,c.status,c.created_at,c.updated_at,c.id_edicion`;
 
@@ -217,14 +218,14 @@ export class CartasService {
         whereJoin +=` and ci.id_rareza in (${jsonData.rarezas}) `;
       }
 
-      sqlQuery += leftJoin + whereJoin + groupBy + ordenamiento + paginatorCondition;
+      sqlQuery += leftJoinInit + leftJoin + whereJoin + groupBy + ordenamiento + paginatorCondition;
       sqlQueryCount += leftJoin + whereJoin;
 
       cartas = await getConnection().query(`${sqlQuery}`);
       contador = await getConnection().query(`${sqlQueryCount}`);
 
-      console.log("contador",contador)
-      console.log("cartas", cartas)
+      console.log("sqlQuery",sqlQuery)
+      console.log("sqlQueryCount", sqlQueryCount)
 
       return {"cartas": cartas, "contador":contador[0].count };
     } catch (ex) {
@@ -435,7 +436,7 @@ export class CartasService {
 
       let legalitiesArr = await this.legalitiesService.findAll();
 
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 0; i < 1; i++) {
         contador = 0;
         console.log('/cards?page=' + i)
         const result = await Axios.get(
