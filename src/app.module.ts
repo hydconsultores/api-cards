@@ -23,6 +23,7 @@ import { CartasLegalitiesModule } from './modules/cartas-legalities/cartas-legal
 import { CartasHechizosModule } from './modules/cartas-hechizos/cartas-hechizos.module';
 import { ReservasModule } from './modules/reservas/reservas.module';
 import { SolicitudesModule } from './modules/solicitudes/solicitudes.module';
+import { MailModule } from './modules/mail/mail.module';
 @Module({
   imports: [GlobalModule, 
     LenguajesModule, 
@@ -45,7 +46,8 @@ import { SolicitudesModule } from './modules/solicitudes/solicitudes.module';
     CartasLegalitiesModule,
     CartasHechizosModule,
     ReservasModule,
-    SolicitudesModule
+    SolicitudesModule,
+    MailModule
   ],
   providers: [],
 })

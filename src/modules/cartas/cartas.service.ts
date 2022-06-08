@@ -436,7 +436,7 @@ export class CartasService {
 
       let legalitiesArr = await this.legalitiesService.findAll();
 
-      for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < 4; i++) {
         contador = 0;
         console.log('/cards?page=' + i)
         const result = await Axios.get(
