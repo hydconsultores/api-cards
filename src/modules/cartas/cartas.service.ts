@@ -143,11 +143,11 @@ export class CartasService {
             ordenamiento = " order by c.id desc "
             break;
 
-          case "Precio Ascendente":
+          case "Precio asc":
             ordenamiento = " order by precio asc "
             break;
 
-          case "Precio Descendiente":
+          case "Precio desc":
             ordenamiento = " order by precio desc "
             break;
 
@@ -401,7 +401,7 @@ export class CartasService {
       let cartas = await getConnection().query(
         `SELECT c.id,c.nombre,e.nombre as nombre_edicion FROM cartas c 
         LEFT JOIN ediciones e on (c.id_edicion= e.id)
-        WHERE LOWER(c.nombre) like '${nombre}%' and c.status='ACTIVE' `);
+        WHERE LOWER(c.nombre) like '%${nombre}%' and c.status='ACTIVE' `);
       return cartas;
     } catch (ex) {
       throw new HttpException(
