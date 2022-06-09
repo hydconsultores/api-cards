@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Mail } from './mail.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Repository } from 'typeorm';
+import { SolicitudesDto } from '../solicitudes/solicitudes.dto';
+import { MailDto } from './mail.dto';
 
 @Injectable()
 export class MailService {
@@ -11,18 +13,74 @@ export class MailService {
     private readonly mailRepository: Repository<Mail>,
     private readonly mailerService:MailerService) {}
 
-  async sendUserConfirmation(user: any, token: string) {
-    const url = `example.com/auth/confirm?token=${token}`;
+  async sendUserConfirmation(asunto: string, template:string, user: any, correo: string, token: string, solicitud: SolicitudesDto) {
+    try{
+      console.log("asunto",asunto)
+      console.log("template",template)
+      console.log("user",user)
+      console.log("correo",correo)
+      console.log("token",token)
+      let emailSend;
+      if(template == 'soporte'){
+        emailSend= await this.mailerService.sendMail({
+          to: correo,
+          subject: asunto,
+          template: template,
+          context: { 
+            name: user,
+            token: token,
+            nombre:solicitud.nombre+" "+solicitud.apellido_pat,
+            correo:solicitud.correo,
+            telefono:solicitud.telefono
+          },
+        });
+        let mail = new MailDto();
+        mail.accepted = emailSend.accepted.toString();
+        mail.rejected = emailSend.rejected.toString();
+        mail.envelopeTime = emailSend.envelopeTime;
+        mail.messageTime = emailSend.messageTime;
+        mail.messageSize = emailSend.messageSize;
+        mail.response = emailSend.response;
+        mail.from = emailSend.envelope.from;
+        mail.to = emailSend.envelope.to;
+        mail.messageId = emailSend.messageId;
+        mail.id_solicitud = solicitud;
+        mail.template = template;
+  
+        this.mailRepository.save(mail);
 
-      await this.mailerService.sendMail({
-      to: "14.gerardo.matias@gmail.com",
-      // from: '"Support Team" <support@example.com>', // override default from
-      subject: 'Welcome to Nice App! Confirm your Email',
-      template: 'confirmation', // `.hbs` extension is appended automatically
-      context: { // ✏️ filling curly brackets with content
-        name: user,
-        url,
-      },
-    });
+        return;
+      }
+      
+      emailSend= await this.mailerService.sendMail({
+        to: correo,
+        subject: asunto,
+        template: template,
+        context: { 
+          name: user,
+          token: token
+        },
+      });
+      //almacenar en BD
+
+      let mail = new MailDto();
+      mail.accepted = emailSend.accepted.toString();
+      mail.rejected = emailSend.rejected.toString();
+      mail.envelopeTime = emailSend.envelopeTime;
+      mail.messageTime = emailSend.messageTime;
+      mail.messageSize = emailSend.messageSize;
+      mail.response = emailSend.response;
+      mail.from = emailSend.envelope.from;
+      mail.to = emailSend.envelope.to;
+      mail.messageId = emailSend.messageId;
+      mail.id_solicitud = solicitud;
+      mail.template = template;
+
+      this.mailRepository.save(mail);
+      console.log("mail",mail)
+    } catch (ex) {
+
+    }
+
   }
 }

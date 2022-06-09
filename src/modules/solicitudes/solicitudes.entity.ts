@@ -1,8 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { CartasIndex } from '../cartas-index/cartas-index.entity';
-import { CartasSubTipos } from '../cartas-sub-tipos/cartas-sub-tipos.entity';
-import { CartasTipos } from '../cartas-tipos/cartas-tipos.entity';
-import { Cartas } from '../cartas/cartas.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Mail } from '../mail/mail.entity';
 import { Reservas } from '../reservas/reservas.entity';
 
 @Entity()
@@ -81,4 +78,7 @@ export class Solicitudes {
 
   @OneToMany(() => Reservas, (reservas: Reservas) => reservas.id_solicitud)
   id_solicitud: Reservas[];
+
+  @OneToMany(() => Mail, (mail: Mail) => mail.id_solicitud)
+  id_solicitud_mail: Mail[];
 }

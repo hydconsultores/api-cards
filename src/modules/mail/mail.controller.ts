@@ -16,10 +16,4 @@ import { Mail } from './mail.entity';
 export class MailController {
   constructor(private readonly menuService: MailService) {}
 
-  
-  @Get('/test')
-  async test(): Promise<any> {
-    this.menuService.sendUserConfirmation("Gerardo", "wena wena");
-    return 1;
-  }
 }

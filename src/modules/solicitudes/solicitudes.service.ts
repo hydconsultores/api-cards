@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Solicitudes } from './solicitudes.entity';
 import { Repository, Not, getConnection } from 'typeorm';
@@ -7,12 +7,18 @@ import Config from '../../config/app';
 import Axios from 'axios';
 import { SolicitudesDto } from './solicitudes.dto';
 import { CartasIndexService } from '../cartas-index/cartas-index.service';
+import { ReservasService } from '../reservas/reservas.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class SolicitudesService {
   constructor(
     @InjectRepository(Solicitudes)
     private readonly solicitudesRepository: Repository<Solicitudes>,
+    @Inject(forwardRef(() => ReservasService))
+    private readonly reservasService: ReservasService,
+    private readonly mailService: MailService
+    
   ) { }
 
   async create(solicitud: SolicitudesDto): Promise<any> {
@@ -61,7 +67,27 @@ export class SolicitudesService {
           let existe = await this.solicitudesRepository.findOne({token:solicitud.token})
           if(existe != null ){
             solicitud.id = existe.id;
-            return await this.solicitudesRepository.save(solicitud)
+            solicitud.status =  'EJECUTADO'
+            await this.reservasService.changeStatusReserva(solicitud.id);
+            let update = await this.solicitudesRepository.save(solicitud)
+            //email cliente
+            this.mailService.sendUserConfirmation(
+              "Solicitud ingresada con éxito",
+              "confirmation",
+              solicitud.nombre+" "+solicitud.apellido_pat,
+              solicitud.correo,
+              solicitud.token,
+              solicitud);
+            
+            //email soporte
+            this.mailService.sendUserConfirmation(
+              "ATENCIÓN, Solicitud Ingresada!",
+              "soporte",
+              "Equipo",
+              "figs021@gmail.com",
+              solicitud.token,
+              solicitud);  
+            return update;
           }else{
             throw new HttpException(
               {

@@ -113,7 +113,36 @@ export class ReservasService {
 
   }
 
-  
+
+  async changeStatusReserva(idSolicitud: number): Promise<any> {
+      //console.log(newRol);
+      if (idSolicitud === undefined) {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Debe incluir idSolicitud',
+          },
+          400,
+        );
+      }
+      try{
+        return await this.reservasRepository.createQueryBuilder("reservas")
+        .update()
+        .set({ status:'EJECUTADO' })
+        .where("id_solicitud = :id", { id: idSolicitud })
+        .execute();
+        
+        } catch (ex) {
+          throw new HttpException(
+            {
+              status: HttpStatus.INTERNAL_SERVER_ERROR,
+              error: ex.message,
+            },
+            500,
+          );
+        }
+    }
+
   async updateContador(reserva: ReservasDto): Promise<any> {
     //console.log(newRol);
     if (reserva === undefined) {

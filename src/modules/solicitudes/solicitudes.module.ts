@@ -1,17 +1,15 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { SolicitudesController } from './solicitudes.controller';
 import { SolicitudesService } from './solicitudes.service';
 import { Solicitudes } from './solicitudes.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Config from '../../config/app';
-import { JwtModule } from '@nestjs/jwt';
-import { CartasIndexModule } from '../cartas-index/cartas-index.module';
-import { Cartas } from '../cartas/cartas.entity';
+import { ReservasModule } from '../reservas/reservas.module';
+import { MailModule } from '../mail/mail.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Solicitudes]),
-    CartasIndexModule,
-    Cartas
+    forwardRef(() => ReservasModule),
+    MailModule
   ],
   providers: [SolicitudesService],
   controllers: [SolicitudesController],

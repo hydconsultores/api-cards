@@ -14,15 +14,16 @@ import { MailController } from './mail.controller';
       // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
       // or
       transport: {
-        host: 'mail.hydconsultores.cl',
-        secure: false,
+        host: process.env.HOST_MAIL, 
+        secure: process.env.SECURE_MAIL == 'true' ? true : false,
+        port:  parseInt(process.env.PORT_MAIL),
         auth: {
-          user: '_mainaccount@hydconsultores.cl',
-          pass: '0NN-T6ewD1.ub9',
+          user: process.env.USER_MAIL,
+          pass: process.env.PASS_MAIL,
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>',
+        from: '"no-reply" <hydconsu@hydconsultores.cl>',
       },
       template: {
         dir: join(__dirname, 'templates'),
