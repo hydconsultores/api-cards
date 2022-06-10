@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Contacto } from '../contacto/contacto.entity';
 import { SolicitudesDto } from '../solicitudes/solicitudes.dto';
 import { Solicitudes } from '../solicitudes/solicitudes.entity';
 
@@ -76,4 +77,8 @@ export class Mail {
       @ManyToOne(() => Solicitudes, (table: Solicitudes) => table.id_solicitud_mail, {})
       @JoinColumn({ name: 'id_solicitud' })
       id_solicitud: Solicitudes;
+
+      @ManyToOne(() => Contacto, (table: Contacto) => table.id_contacto, {})
+      @JoinColumn({ name: 'id_contacto' })
+      id_contacto: Contacto;
 }

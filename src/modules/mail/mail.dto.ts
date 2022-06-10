@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ContactoDto } from "../contacto/contacto.dto";
 import { SolicitudesDto } from "../solicitudes/solicitudes.dto";
 
 export class MailDto {
@@ -41,4 +42,7 @@ export class MailDto {
 
     @ApiProperty()
     id_solicitud: SolicitudesDto;
+
+    @ApiProperty()
+    id_contacto: ContactoDto;
 }

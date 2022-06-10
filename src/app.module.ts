@@ -24,6 +24,7 @@ import { CartasHechizosModule } from './modules/cartas-hechizos/cartas-hechizos.
 import { ReservasModule } from './modules/reservas/reservas.module';
 import { SolicitudesModule } from './modules/solicitudes/solicitudes.module';
 import { MailModule } from './modules/mail/mail.module';
+import { ContactoModule } from './modules/contacto/contacto.module';
 @Module({
   imports: [GlobalModule, 
     LenguajesModule, 
@@ -47,7 +48,8 @@ import { MailModule } from './modules/mail/mail.module';
     CartasHechizosModule,
     ReservasModule,
     SolicitudesModule,
-    MailModule
+    MailModule,
+    ContactoModule
   ],
   providers: [],
 })
